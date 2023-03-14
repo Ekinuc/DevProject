@@ -9,6 +9,7 @@ import kodlama.io.devs.business.abstracts.ProgrammingLanguageService;
 import kodlama.io.devs.business.requests.CreateProgrammingLanguageRequest;
 import kodlama.io.devs.business.requests.UpdateProgrammingLanguageRequest;
 import kodlama.io.devs.business.responses.GetAllProgrammingLanguageResponse;
+import kodlama.io.devs.business.rules.ProgrammingLanguageBusinessRules;
 import kodlama.io.devs.core.utilities.mappers.ModelMapperService;
 import kodlama.io.devs.dataAccess.abstracts.ProgrammingLanguageRepository;
 import kodlama.io.devs.entities.concretes.ProgrammingLanguage;
@@ -19,6 +20,7 @@ import lombok.AllArgsConstructor;
 public class ProgrammingLanguageManager implements ProgrammingLanguageService{
 	
 	private ProgrammingLanguageRepository programmingLanguageRepository;
+	private ProgrammingLanguageBusinessRules programmingLanguageBusinessRules;
 	private ModelMapperService moddelMapperService;
 	
 
@@ -34,17 +36,8 @@ public class ProgrammingLanguageManager implements ProgrammingLanguageService{
 	}
 
 	@Override
-	public void add(CreateProgrammingLanguageRequest createProgrammingLanguageRequest) throws Exception {
-		if (createProgrammingLanguageRequest.getName().isEmpty() || createProgrammingLanguageRequest.getName().isBlank()) {
-			throw new Exception("Name can not be blank");
-		}
-		
-		for (ProgrammingLanguage language : programmingLanguageRepository.findAll()) {
-			if (createProgrammingLanguageRequest.getName().equals(language.getName())) {
-				throw new Exception("Names can not be same");
-			}
-			
-		}
+	public void add(CreateProgrammingLanguageRequest createProgrammingLanguageRequest) {
+		programmingLanguageBusinessRules.checkIfProgrammingLanguageNameExists(createProgrammingLanguageRequest.getName());
 		ProgrammingLanguage programmingLanguage = this.moddelMapperService
 				.forRequest()
 				.map(createProgrammingLanguageRequest, ProgrammingLanguage.class);

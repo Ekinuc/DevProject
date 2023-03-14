@@ -9,8 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,8 +28,6 @@ public class ProgrammingLanguage {
 	@Column(name="id")
 	private int id;
 	
-	@NotBlank
-	@NotNull
 	@Column(name="name")
 	private String name;
 	
